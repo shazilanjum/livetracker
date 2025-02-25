@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Location Tracker</title>
+</head>
+
+<body>
+  <h2>Live Location Tracker</h2>
+  <p id="status">Fetching location...</p>
+  <p><strong>Latitude:</strong> <span id="latitude"></span></p>
+  <p><strong>Longitude:</strong> <span id="longitude"></span></p>
+  <script>
+    function updateLocation(position) {
+      document.getElementById('latitude').textContent = position.coords.latitude;
+      document.getElementById('longitude').textContent = position.coords.longitude;
+      document.getElementById('status').textContent = "Location Updated";
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById('status').textContent = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById('status').textContent = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          document.getElementById('status').textContent = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          document.getElementById('status').textContent = "An unknown error occurred.";
+          break;
+      }
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(updateLocation, showError);
+    } else {
+      document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
+    }
+  </script>
+</body>
+
+</html>
